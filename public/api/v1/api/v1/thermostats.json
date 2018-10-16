@@ -1,0 +1,58 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://localhost:3000",
+  "resourcePath": "thermostats",
+  "apis": [
+    {
+      "path": "/api/v1/thermostats.json",
+      "operations": [
+        {
+          "summary": "Lists out all the teams that the logged in user is part of",
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            },
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Api::V1::Thermostats#index",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/api/v1/thermostats/{id}.json",
+      "operations": [
+        {
+          "summary": "Get Reading details for a specific id",
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "notes": "Reading Id should be present",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "id",
+              "type": "integer",
+              "description": "Reading ID",
+              "required": true
+            }
+          ],
+          "nickname": "Api::V1::Thermostats#show",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}
