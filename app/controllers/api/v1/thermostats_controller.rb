@@ -3,23 +3,38 @@ class Api::V1::ThermostatsController < ApiBaseController
   swagger_controller :thermostats, 'Thermostats'
 
   swagger_api :index do
-    summary 'Lists out all the teams that the logged in user is part of'
+    summary 'Lists out all the Thermostats'
     response :ok
     response :unauthorized
   end
 
   def index
-    #@teams = current_user.enabled_teams.order(:name)
+    @thermostats = Thermostat.all
+    render json: @thermostats, status: :ok
   end
 
-  swagger_api :show do
-    summary 'Get Reading details for a specific id'
-    notes 'Reading Id should be present'
-    param :query, :id, :integer, :required, 'Reading ID'
-    response :ok
-    #response :unauthorized
+  swagger_api :create do
+    summary 'Create thermostat details'
+    notes 'Create thermostat details'
+    param :form, :"thermostat[household_token]", :string, :required, 'Household Token'
+    param :form, :"thermostat[location]", :string, :required, 'Location'
+    response :created
+    response :forbidden
+    response :bad_request
   end
 
-  def show
+  def create
+    @team = Thermostat.new(thermostat_params)
+    #authorize! :create, @team
+    if @team.save
+      render json: {success: true}, status: :created
+    else
+      render json: {success: false}, status: :created, status: :bad_request
+    end
+  end
+
+  protected
+  def thermostat_params
+    params.require(:thermostat).permit(:household_token, :location)
   end
 end
